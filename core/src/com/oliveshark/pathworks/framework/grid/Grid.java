@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.entities.Agent;
+import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import java.util.Collection;
 import static com.oliveshark.pathworks.config.Config.*;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
+import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class Grid extends Actor implements InputProcessor {
 
@@ -104,9 +106,11 @@ public class Grid extends Actor implements InputProcessor {
     }
 
     private void reverseCells() {
-        for (Cell[] col : cells) {
-            for (Cell cell : col) {
-                cell.toggleOccupied();
+        for (int i = 0; i < cells.length; ++i) {
+            for (int j = 0; j < cells[i].length; ++j) {
+                if (!hasAgentOnTile(getPositionFromGridPosition(i, j))) {
+                    cells[i][j].toggleOccupied();
+                }
             }
         }
     }
@@ -124,21 +128,21 @@ public class Grid extends Actor implements InputProcessor {
         Cell cell = cells[cellPos.x][cellPos.y];
 
         if (button == Input.Buttons.RIGHT) {
-            if (cellOccupied(cellPos) || hasAgentOnPosition(cellPos)) {
+            if (cellOccupied(cellPos) || hasAgentOnTile(cellPos)) {
                 return false;
             }
             if (secondRightClick) {
-                currentAgent.setDestination(cellPos);
+                currentAgent.setDestination(getPositionFromGridPosition(cellPos));
                 currentAgent = null;
                 secondRightClick = false;
             } else {
-                currentAgent = new Agent(cellPos);
+                currentAgent = new Agent(getPositionFromGridPosition(cellPos));
                 agents.add(currentAgent);
                 secondRightClick = true;
             }
             return false;
         } else if (button == Input.Buttons.LEFT) {
-            if (hasAgentOnPosition(cellPos)) {
+            if (hasAgentOnTile(cellPos)) {
                 return false;
             }
             cell.toggleOccupied();
@@ -152,10 +156,20 @@ public class Grid extends Actor implements InputProcessor {
         return false;
     }
 
-    private boolean hasAgentOnPosition(Position<Integer> agentPos) {
+    private boolean hasAgentOnTile(Position<Integer> tilePos) {
+        Rectangle rect = createSquare(tilePos, TILE_DIMENSION);
         for (Agent agent : agents) {
-            if (agentPos.equals(agent.getPosition()) || agentPos.equals(agent.getDestination())) {
+            Position<Integer> agentPos = agent.getPosition();
+            Rectangle agentRect = createSquare(agentPos, TILE_DIMENSION);
+            if (rect.overlaps(agentRect)) {
                 return true;
+            }
+            Position<Integer> destPos = agent.getDestination();
+            if (destPos != null) {
+                Rectangle destRect = createSquare(destPos, TILE_DIMENSION);
+                if (rect.overlaps(destRect)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -178,8 +192,8 @@ public class Grid extends Actor implements InputProcessor {
         if (!mouseLeftButtonDown)
             return true;
         Position<Integer> cellPos = getGridPositionFromScreenPosition(screenX, screenY);
-        if (hasAgentOnPosition(cellPos)) {
-            return false;
+        if (hasAgentOnTile(getPositionFromGridPosition(cellPos))) {
+            return true;
         }
         cells[cellPos.x][cellPos.y].setOccupied(mouseLeftButtonDownToggle);
         updateMousePos(screenX, screenY);

@@ -21,6 +21,10 @@ public class PositionUtil {
         return new Position<>(cellX, cellY);
     }
 
+    public static Position<Integer> getPositionFromGridPosition(Position<Integer> pos) {
+        return getPositionFromGridPosition(pos.x, pos.y);
+    }
+
     public static Position<Integer> getPositionFromGridPosition(int x, int y) {
         return new Position<>(x * TILE_DIMENSION, y * TILE_DIMENSION);
     }
