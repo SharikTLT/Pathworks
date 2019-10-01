@@ -17,8 +17,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static com.oliveshark.pathworks.config.Config.*;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.*;
+import static com.oliveshark.pathworks.config.Config.GRID_HEIGHT;
+import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
+import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromScreenPosition;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class Grid extends Actor implements InputProcessor {
@@ -170,12 +174,12 @@ public class Grid extends Actor implements InputProcessor {
         Iterator<Agent> it = agents.iterator();
         while (it.hasNext()) {
             Agent agent = it.next();
-            Rectangle agentRect = Rectangle.createSquare(agent.getPosition(), TILE_DIMENSION);
+            Rectangle agentRect = createSquare(agent.getPosition(), TILE_DIMENSION);
             if (agentRect.contains(screenPos)) {
                 it.remove();
             }
             if (agent.hasDestination()) {
-                Rectangle destRect = Rectangle.createSquare(agent.getDestination(), TILE_DIMENSION);
+                Rectangle destRect = createSquare(agent.getDestination(), TILE_DIMENSION);
                 if (destRect.contains(screenPos)) {
                     it.remove();
                 }
