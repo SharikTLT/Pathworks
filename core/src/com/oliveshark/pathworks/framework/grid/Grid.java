@@ -128,7 +128,7 @@ public class Grid extends Actor implements InputProcessor {
         Cell cell = cells[cellPos.x][cellPos.y];
 
         if (button == Input.Buttons.RIGHT) {
-            if (cellOccupied(cellPos) || hasAgentOnTile(cellPos)) {
+            if (cellOccupied(cellPos) || hasAgentOnTile(getPositionFromGridPosition(cellPos))) {
                 return false;
             }
             if (secondRightClick) {
