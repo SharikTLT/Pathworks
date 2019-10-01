@@ -28,4 +28,15 @@ public class PositionUtil {
     public static Position<Integer> getPositionFromGridPosition(int x, int y) {
         return new Position<>(x * TILE_DIMENSION, y * TILE_DIMENSION);
     }
+
+    /**
+     * This converts 'click' positions (that have origin in top left corner)
+     * to a GDX position (that has origin in bottom left)
+     * @param screenX The click x position
+     * @param screenY The click y position
+     * @return A gdx position
+     */
+    public static Position<Integer> getPositionFromScreenPosition(int screenX, int screenY) {
+        return new Position<>(screenX, GRID_HEIGHT * TILE_DIMENSION - screenY);
+    }
 }

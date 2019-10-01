@@ -65,6 +65,10 @@ public class Agent {
         this.position = position;
     }
 
+    public boolean hasDestination() {
+        return destination != null;
+    }
+
     public Position<Integer> getDestination() {
         return destination;
     }
