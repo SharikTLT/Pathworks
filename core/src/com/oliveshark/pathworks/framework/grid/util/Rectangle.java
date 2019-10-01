@@ -30,6 +30,10 @@ public class Rectangle {
         return new Rectangle(pos, dim, dim);
     }
 
+    public boolean contains(Position<Integer> pos) {
+        return pos.x > x && pos.x < x + w && pos.y > y && pos.y < y + h;
+    }
+
     public boolean overlaps(Rectangle r) {
         return !(x + w <= r.x || x >= r.x + r.w
                 || y <= r.y - r.h || y - h >= r.y);

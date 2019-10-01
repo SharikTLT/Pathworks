@@ -7,7 +7,6 @@ import com.oliveshark.pathworks.core.Position;
 import java.util.Random;
 
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
-import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
 
 public class Agent {
 
@@ -63,6 +62,10 @@ public class Agent {
 
     public void setPosition(Position<Integer> position) {
         this.position = position;
+    }
+
+    public boolean hasDestination() {
+        return destination != null;
     }
 
     public Position<Integer> getDestination() {
