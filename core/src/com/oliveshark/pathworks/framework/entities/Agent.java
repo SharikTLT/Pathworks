@@ -33,10 +33,10 @@ public class Agent {
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(color);
 
-        int halfWidth = (GRID_WIDTH >> 1);
+        int halfWidth = (TILE_DIMENSION >> 1);
 
-        float posXCenter = position.x * TILE_DIMENSION + halfWidth;
-        float posYCenter = position.y * TILE_DIMENSION + halfWidth;
+        float posXCenter = position.x + halfWidth;
+        float posYCenter = position.y + halfWidth;
 
         // Agent
         renderer.circle(posXCenter, posYCenter, halfWidth);
@@ -45,9 +45,8 @@ public class Agent {
             return;
         }
 
-
-        float destXCenter = destination.x * TILE_DIMENSION + halfWidth;
-        float destYCenter = destination.y * TILE_DIMENSION + halfWidth;
+        float destXCenter = destination.x + halfWidth;
+        float destYCenter = destination.y + halfWidth;
 
         Position<Float> triangleTop = new Position<>(destXCenter, destYCenter + halfWidth);
         Position<Float> triangleLeft = new Position<>(destXCenter - halfWidth, destYCenter - halfWidth);
