@@ -6,7 +6,10 @@ import java.util.Objects;
 
 public class Rectangle {
 
-    private int x, y, w, h;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
 
     public Rectangle(int x, int y, int w, int h) {
         this.x = x;

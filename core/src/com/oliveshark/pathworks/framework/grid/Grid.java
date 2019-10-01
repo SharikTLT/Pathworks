@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.entities.Agent;
-import com.oliveshark.pathworks.framework.grid.util.PositionUtil;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
 import java.util.ArrayList;
