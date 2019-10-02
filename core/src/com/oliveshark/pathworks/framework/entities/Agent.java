@@ -1,23 +1,30 @@
 package com.oliveshark.pathworks.framework.entities;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.oliveshark.pathworks.core.Position;
+import com.oliveshark.pathworks.core.Vector2;
 
 import java.util.Random;
 
-import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
+public class Agent extends Actor {
 
-public class Agent {
-
-    private Position<Integer> position;
     private Position<Integer> destination;
-//    private float velocity = 0.0f;
-    private final Color color;
+    private Vector2 velocity = new Vector2(20, 20);
+    private Texture agentTexture = null;
+    private Texture destinationTexture = null;
 
-    public Agent(Position<Integer> position){
-        color = generateRandomColor();
-        this.position = position;
+    public Agent(Texture agentTexture, Texture destinationTexture, float x, float y){
+        setColor(generateRandomColor());
+        this.agentTexture = agentTexture;
+        this.destinationTexture = destinationTexture;
+        setX(x);
+        setY(y);
+        setWidth(32);
+        setHeight(32);
+        setName("agent");
     }
 
     private Color generateRandomColor() {
@@ -29,39 +36,28 @@ public class Agent {
         return new Color(red, green, blue, 1.0f);
     }
 
-    public void draw(ShapeRenderer renderer) {
-        renderer.setColor(color);
+    public Vector2 getVelocity() {
+        return velocity;
+    }
 
-        int halfWidth = (TILE_DIMENSION >> 1);
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
+    }
 
-        float posXCenter = position.x + halfWidth;
-        float posYCenter = position.y + halfWidth;
+    public void move(float delta) {
+        setX(getX() + velocity.getX() * delta);
+        setY(getY() + velocity.getY() * delta);
+    }
 
-        // Agent
-        renderer.circle(posXCenter, posYCenter, halfWidth);
-
-        if(destination == null){
-            return;
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.setColor(getColor());
+        batch.draw(agentTexture, getX(), getY());
+        if (destination != null) {
+            batch.draw(destinationTexture, destination.x, destination.y);
         }
-
-        float destXCenter = destination.x + halfWidth;
-        float destYCenter = destination.y + halfWidth;
-
-        Position<Float> triangleTop = new Position<>(destXCenter, destYCenter + halfWidth);
-        Position<Float> triangleLeft = new Position<>(destXCenter - halfWidth, destYCenter - halfWidth);
-        Position<Float> triangleRight = new Position<>(destXCenter + halfWidth, destYCenter - halfWidth);
-
-        // Destination
-        renderer.triangle(triangleTop.x, triangleTop.y, triangleLeft.x,
-                triangleLeft.y, triangleRight.x, triangleRight.y);
-    }
-
-    public Position<Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position<Integer> position) {
-        this.position = position;
+        batch.setColor(Color.WHITE);
     }
 
     public boolean hasDestination() {
@@ -74,9 +70,5 @@ public class Agent {
 
     public void setDestination(Position<Integer> destination) {
         this.destination = destination;
-    }
-
-    public Color getColor() {
-        return color;
     }
 }
