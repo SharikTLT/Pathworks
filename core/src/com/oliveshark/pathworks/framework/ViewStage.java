@@ -9,12 +9,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.entities.Agent;
+import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
@@ -26,6 +26,9 @@ import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquar
 
 public class ViewStage extends Stage {
 
+    private Grid grid;
+    private PointerIndicator pointerIndicator;
+
     private Agent currentAgent = null;
     private boolean secondRightClick = false;
 
@@ -35,15 +38,30 @@ public class ViewStage extends Stage {
     public ViewStage() {
         agentTexture = new Texture(Gdx.files.internal("agent.png"));
         destTexture = new Texture(Gdx.files.internal("destination.png"));
+        addActor(grid = new Grid());
+        addActor(pointerIndicator = new PointerIndicator());
         getBatch().enableBlending();
         addListener(new InputListener() {
+
             @Override
             public boolean keyTyped(InputEvent event, char character) {
                 if (character == 'r') {
-                    Objects.requireNonNull(getGrid()).reverseCells();
+                    grid.reverseCells();
                     return true;
                 }
                 return false;
+            }
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                pointerIndicator.updatePosition(x, y);
+                return super.mouseMoved(event, x, y);
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                pointerIndicator.updatePosition(x, y);
+                super.touchDragged(event, x, y, pointer);
             }
         });
     }
@@ -73,8 +91,6 @@ public class ViewStage extends Stage {
             }
 
             // Otherwise check if we should add an agent or a destination
-            Grid grid = getGrid();
-            assert grid != null;
             if (grid.isCellOccupied(cellPos) || hasAgentOnTile(gdxCellPos)) {
                 return false;
             }
@@ -97,7 +113,7 @@ public class ViewStage extends Stage {
     private List<Agent> getAgents() {
         return Stream.of(getActors().items)
                 .filter(Objects::nonNull)
-                .filter(actor -> "agent".equals(actor.getName()))
+                .filter(actor -> actor instanceof Agent)
                 .map(actor -> (Agent) actor)
                 .collect(Collectors.toList());
     }
@@ -138,14 +154,5 @@ public class ViewStage extends Stage {
             }
         }
         return false;
-    }
-
-    private Grid getGrid() {
-        for (Actor actor : getActors()) {
-            if ("grid".equals(actor.getName())) {
-                return (Grid) actor;
-            }
-        }
-        return null;
     }
 }
