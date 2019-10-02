@@ -7,16 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.ViewStage;
-import com.oliveshark.pathworks.framework.entities.Agent;
-import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
 import static com.oliveshark.pathworks.config.Config.*;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromPosition;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
-import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class Grid extends Actor {
 

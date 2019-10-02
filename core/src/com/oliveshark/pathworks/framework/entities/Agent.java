@@ -12,7 +12,7 @@ import java.util.Random;
 public class Agent extends Actor {
 
     private Position<Integer> destination;
-    private Vector2 velocity = new Vector2(20, 20);
+    private Vector2 velocity = new Vector2(0, 0);
     private Texture agentTexture = null;
     private Texture destinationTexture = null;
 

@@ -43,7 +43,7 @@ public class Vector2 {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vector2 vector2 = (Vector2) o;
-        return x == x && y == y;
+        return x == vector2.x && y == vector2.y;
     }
 
     @Override

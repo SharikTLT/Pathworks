@@ -13,14 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.grid.Grid;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.*;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
+import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromScreenPosition;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class ViewStage extends Stage {
@@ -106,14 +107,14 @@ public class ViewStage extends Stage {
     }
 
     private Agent getAgentFor(float x, float y) {
-        Position<Float> pos = new Position(x, y);
+        Position<Float> pos = new Position<>(x, y);
         for (Agent agent : getAgents()) {
             Rectangle agentRect = Rectangle.fromActor(agent);
             if (agentRect.contains(pos)) {
                 return agent;
             }
             if (agent.hasDestination()) {
-                Rectangle destRect = Rectangle.createSquare(agent.getDestination(), TILE_DIMENSION);
+                Rectangle destRect = createSquare(agent.getDestination(), TILE_DIMENSION);
                 if (destRect.contains(pos)) {
                     return agent;
                 }
