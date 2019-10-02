@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL30;
 import com.oliveshark.pathworks.framework.ViewStage;
-import com.oliveshark.pathworks.framework.grid.Grid;
 
 public class Pathworks extends ApplicationAdapter {
 	private ViewStage viewStage;
@@ -12,7 +11,6 @@ public class Pathworks extends ApplicationAdapter {
 	@Override
 	public void create () {
 	    viewStage = new ViewStage();
-	    viewStage.addActor(new Grid());
 	    Gdx.input.setInputProcessor(viewStage);
 	}
 

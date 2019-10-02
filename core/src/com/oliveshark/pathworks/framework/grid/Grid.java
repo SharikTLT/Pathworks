@@ -22,7 +22,7 @@ public class Grid extends Actor {
     private boolean touchDragToggle = false;
 
     public Grid() {
-        tileTexture = new Texture(Gdx.files.internal("tiles.png"));
+        tileTexture = new Texture(Gdx.files.internal("tiles_grass_boulder.png"));
         cells = new Cell[GRID_WIDTH][GRID_HEIGHT];
         for (int i = 0; i < GRID_WIDTH; ++i) {
             for (int j = 0; j < GRID_HEIGHT; ++j) cells[i][j] = new Cell(tileTexture);
