@@ -44,7 +44,9 @@ public class Agent extends Actor {
         this.velocity = velocity;
     }
 
-    public void move(float delta) {
+    @Override
+    public void act(float delta) {
+        super.act(delta);
         setX(getX() + velocity.getX() * delta);
         setY(getY() + velocity.getY() * delta);
     }
