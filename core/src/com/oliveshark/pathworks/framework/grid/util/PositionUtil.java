@@ -6,6 +6,15 @@ import static com.oliveshark.pathworks.config.Config.*;
 
 public class PositionUtil {
 
+    /**
+     * This converts 'click' positions (that have origin in top left corner)
+     * to a grid position (that has origin in bottom left) and coresponds to a grid cells
+     * in the Grids cell matrix
+     *
+     * @param x The x pos
+     * @param y The y pos
+     * @return The position in Grid cell coordinates
+     */
     public static Position<Integer> getGridPositionFromScreenPosition(int x, int y) {
         int cellX = (x - (x % TILE_DIMENSION)) / TILE_DIMENSION;
         int cellY = (y - (y % TILE_DIMENSION)) / TILE_DIMENSION;
@@ -19,6 +28,24 @@ public class PositionUtil {
         if (cellY < 0) cellY = 0;
         else if (cellY >= GRID_HEIGHT) cellY = GRID_HEIGHT - 1;
         return new Position<>(cellX, cellY);
+    }
+
+    /**
+     * Takes a position and converts it to the coresponding grid cell position.
+     *
+     * @param x The x pos
+     * @param y The y pos
+     * @return The position in Grid cell coordinates
+     */
+    public static Position<Integer> getGridPositionFromPosition(float x, float y) {
+        float cellX = (x - (x % TILE_DIMENSION)) / TILE_DIMENSION;
+        float cellY = (y - (y % TILE_DIMENSION)) / TILE_DIMENSION;
+
+        if (cellX < 0) cellX = 0;
+        else if (cellX >= GRID_WIDTH) cellX = GRID_WIDTH - 1;
+        if (cellY < 0) cellY = 0;
+        else if (cellY >= GRID_HEIGHT) cellY = GRID_HEIGHT - 1;
+        return new Position<>((int) cellX, (int) cellY);
     }
 
     public static Position<Integer> getPositionFromGridPosition(Position<Integer> pos) {

@@ -19,8 +19,8 @@ public class TestRectangle {
 
     @Test
     public void testContains() {
-        Position<Integer> pos1 = new Position(15, 15);
-        Position<Integer> pos2 = new Position(35, 35);
+        Position<Float> pos1 = new Position<Float>(15f, 15f);
+        Position<Float> pos2 = new Position<Float>(35f, 35f);
         Rectangle rect = Rectangle.createSquare(0, 0, 32);
 
         Assertions.assertTrue(rect.contains(pos1));
