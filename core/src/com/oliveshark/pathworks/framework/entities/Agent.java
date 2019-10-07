@@ -3,15 +3,14 @@ package com.oliveshark.pathworks.framework.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.oliveshark.pathworks.core.Position;
-import com.oliveshark.pathworks.core.Vector2;
 
 import java.util.Random;
 
 public class Agent extends Actor {
 
-    private Position<Integer> destination;
+    private Vector2 destination;
     private Vector2 velocity = new Vector2(0, 0);
     private Texture agentTexture = null;
     private Texture destinationTexture = null;
@@ -47,8 +46,8 @@ public class Agent extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        setX(getX() + velocity.getX() * delta);
-        setY(getY() + velocity.getY() * delta);
+        setX(getX() + velocity.x * delta);
+        setY(getY() + velocity.y * delta);
     }
 
     @Override
@@ -66,11 +65,11 @@ public class Agent extends Actor {
         return destination != null;
     }
 
-    public Position<Integer> getDestination() {
+    public Vector2 getDestination() {
         return destination;
     }
 
-    public void setDestination(Position<Integer> destination) {
+    public void setDestination(Vector2 destination) {
         this.destination = destination;
     }
 }

@@ -1,7 +1,7 @@
 package com.oliveshark.pathworks.framework.grid.util;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.oliveshark.pathworks.core.Position;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ public class Rectangle {
         this.h = h;
     }
 
-    public Rectangle(Position<Integer> pos, float w, float h) {
+    public Rectangle(Vector2 pos, float w, float h) {
         this(pos.x, pos.y, w, h);
     }
 
@@ -27,7 +27,7 @@ public class Rectangle {
         return new Rectangle(x, y, dim, dim);
     }
 
-    public static Rectangle createSquare(Position<Integer> pos, float dim) {
+    public static Rectangle createSquare(Vector2 pos, float dim) {
         return new Rectangle(pos, dim, dim);
     }
 
@@ -35,7 +35,7 @@ public class Rectangle {
         return new Rectangle(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
     }
 
-    public boolean contains(Position<Float> pos) {
+    public boolean contains(Vector2 pos) {
         return pos.x > x && pos.x < x + w && pos.y > y && pos.y < y + h;
     }
 

@@ -1,8 +1,10 @@
 package com.oliveshark.pathworks.framework.grid.util;
 
-import com.oliveshark.pathworks.core.Position;
+import com.badlogic.gdx.math.Vector2;
 
-import static com.oliveshark.pathworks.config.Config.*;
+import static com.oliveshark.pathworks.config.Config.GRID_HEIGHT;
+import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
+import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
 
 public class PositionUtil {
 
@@ -15,7 +17,7 @@ public class PositionUtil {
      * @param y The y pos
      * @return The position in Grid cell coordinates
      */
-    public static Position<Integer> getGridPositionFromScreenPosition(int x, int y) {
+    public static Vector2 getGridPositionFromScreenPosition(int x, int y) {
         int cellX = (x - (x % TILE_DIMENSION)) / TILE_DIMENSION;
         int cellY = (y - (y % TILE_DIMENSION)) / TILE_DIMENSION;
 
@@ -27,7 +29,7 @@ public class PositionUtil {
         else if (cellX >= GRID_WIDTH) cellX = GRID_WIDTH - 1;
         if (cellY < 0) cellY = 0;
         else if (cellY >= GRID_HEIGHT) cellY = GRID_HEIGHT - 1;
-        return new Position<>(cellX, cellY);
+        return new Vector2(cellX, cellY);
     }
 
     /**
@@ -37,7 +39,7 @@ public class PositionUtil {
      * @param y The y pos
      * @return The position in Grid cell coordinates
      */
-    public static Position<Integer> getGridPositionFromPosition(float x, float y) {
+    public static Vector2 getGridPositionFromPosition(float x, float y) {
         float cellX = (x - (x % TILE_DIMENSION)) / TILE_DIMENSION;
         float cellY = (y - (y % TILE_DIMENSION)) / TILE_DIMENSION;
 
@@ -45,25 +47,18 @@ public class PositionUtil {
         else if (cellX >= GRID_WIDTH) cellX = GRID_WIDTH - 1;
         if (cellY < 0) cellY = 0;
         else if (cellY >= GRID_HEIGHT) cellY = GRID_HEIGHT - 1;
-        return new Position<>((int) cellX, (int) cellY);
+        return new Vector2(cellX, cellY);
     }
 
-    public static Position<Integer> getPositionFromGridPosition(Position<Integer> pos) {
+    public static Vector2 getPositionFromGridPosition(Vector2 pos) {
         return getPositionFromGridPosition(pos.x, pos.y);
     }
 
-    public static Position<Integer> getPositionFromGridPosition(int x, int y) {
-        return new Position<>(x * TILE_DIMENSION, y * TILE_DIMENSION);
+    public static Vector2 getPositionFromGridPosition(int x, int y) {
+        return new Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION);
     }
 
-    /**
-     * This converts 'click' positions (that have origin in top left corner)
-     * to a GDX position (that has origin in bottom left)
-     * @param screenX The click x position
-     * @param screenY The click y position
-     * @return A gdx position
-     */
-    public static Position<Integer> getPositionFromScreenPosition(int screenX, int screenY) {
-        return new Position<>(screenX, GRID_HEIGHT * TILE_DIMENSION - screenY);
+    public static Vector2 getPositionFromGridPosition(float x, float y) {
+        return new Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION);
     }
 }

@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.grid.util.PositionUtil;
 
 public class PointerIndicator extends Actor {
@@ -25,8 +25,8 @@ public class PointerIndicator extends Actor {
     }
 
     public void updatePosition(float x, float y) {
-        Position<Integer> gridPos = PositionUtil.getGridPositionFromPosition(x, y);
-        Position<Integer> gdxCellPos = PositionUtil.getPositionFromGridPosition(gridPos);
+        Vector2 gridPos = PositionUtil.getGridPositionFromPosition(x, y);
+        Vector2 gdxCellPos = PositionUtil.getPositionFromGridPosition(gridPos);
         setX(gdxCellPos.x);
         setY(gdxCellPos.y);
     }

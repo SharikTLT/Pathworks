@@ -1,6 +1,6 @@
 package com.oliveshark.pathworks.framework.grid.util;
 
-import com.oliveshark.pathworks.core.Position;
+import com.badlogic.gdx.math.Vector2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +19,8 @@ public class TestRectangle {
 
     @Test
     public void testContains() {
-        Position<Float> pos1 = new Position<Float>(15f, 15f);
-        Position<Float> pos2 = new Position<Float>(35f, 35f);
+        Vector2 pos1 = new Vector2(15f, 15f);
+        Vector2 pos2 = new Vector2(35f, 35f);
         Rectangle rect = Rectangle.createSquare(0, 0, 32);
 
         Assertions.assertTrue(rect.contains(pos1));

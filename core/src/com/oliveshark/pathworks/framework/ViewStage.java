@@ -1,27 +1,26 @@
 package com.oliveshark.pathworks.framework;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.oliveshark.pathworks.core.Position;
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
 import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromScreenPosition;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class ViewStage extends Stage {
@@ -80,9 +79,9 @@ public class ViewStage extends Stage {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            Position<Integer> cellPos = getGridPositionFromScreenPosition(screenX, screenY);
-            Position<Integer> gdxCellPos = getPositionFromGridPosition(cellPos);
-            Position<Integer> gdxPos = getPositionFromScreenPosition(screenX, screenY);
+            Vector2 cellPos = getGridPositionFromScreenPosition(screenX, screenY);
+            Vector2 gdxCellPos = getPositionFromGridPosition(cellPos);
+            Vector2 gdxPos = screenToStageCoordinates(new Vector2(screenX, screenY));
 
             // Check if this is a remove agent click
             if (!secondRightClick && hasAgentOrDestinationAt(gdxPos.x, gdxPos.y)) {
@@ -123,7 +122,7 @@ public class ViewStage extends Stage {
     }
 
     private Agent getAgentFor(float x, float y) {
-        Position<Float> pos = new Position<>(x, y);
+        Vector2 pos = new Vector2(x, y);
         for (Agent agent : getAgents()) {
             Rectangle agentRect = Rectangle.fromActor(agent);
             if (agentRect.contains(pos)) {
@@ -139,7 +138,7 @@ public class ViewStage extends Stage {
         return null;
     }
 
-    public boolean hasAgentOnTile(Position<Integer> tilePos) {
+    public boolean hasAgentOnTile(Vector2 tilePos) {
         Rectangle rect = createSquare(tilePos, TILE_DIMENSION);
         for (Agent agent : getAgents()) {
             Rectangle agentRect = Rectangle.fromActor(agent);
