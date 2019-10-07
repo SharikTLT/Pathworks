@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class ViewStage extends Stage {
@@ -79,8 +77,8 @@ public class ViewStage extends Stage {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
-            Vector2 cellPos = getGridPositionFromScreenPosition(screenX, screenY);
-            Vector2 gdxCellPos = getPositionFromGridPosition(cellPos);
+            Vector2 cellPos = Grid.getGridPositionFromScreenPosition(screenX, screenY);
+            Vector2 gdxCellPos = Grid.getStagePositionFromGridPosition(cellPos);
             Vector2 gdxPos = screenToStageCoordinates(new Vector2(screenX, screenY));
 
             // Check if this is a remove agent click

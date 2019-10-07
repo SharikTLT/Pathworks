@@ -7,16 +7,14 @@ import org.junit.jupiter.api.Test;
 import static com.oliveshark.pathworks.config.Config.GRID_HEIGHT;
 import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getGridPositionFromScreenPosition;
-import static com.oliveshark.pathworks.framework.grid.util.PositionUtil.getPositionFromGridPosition;
 
 class TestPositionUtil {
 
     @Test
     void testGetGridPositionFromScreenPosition() {
-        Vector2 beyondTopRight = getGridPositionFromScreenPosition(GRID_WIDTH*TILE_DIMENSION + 10, -100);
-        Vector2 beyondBottomLeft = getGridPositionFromScreenPosition(-100, GRID_HEIGHT*TILE_DIMENSION + 10);
-        Vector2 withinGrid = getGridPositionFromScreenPosition(320, 320);
+        Vector2 beyondTopRight = Grid.getGridPositionFromScreenPosition(GRID_WIDTH*TILE_DIMENSION + 10, -100);
+        Vector2 beyondBottomLeft = Grid.getGridPositionFromScreenPosition(-100, GRID_HEIGHT*TILE_DIMENSION + 10);
+        Vector2 withinGrid = Grid.getGridPositionFromScreenPosition(320, 320);
 
         Assertions.assertEquals(new Vector2(GRID_WIDTH - 1, GRID_HEIGHT - 1), beyondTopRight);
         Assertions.assertEquals(new Vector2(0, 0), beyondBottomLeft);
@@ -25,7 +23,7 @@ class TestPositionUtil {
 
     @Test
     void testGetPositionFromGridPosition() {
-        Vector2 pos = getPositionFromGridPosition(10, 10);
+        Vector2 pos = Grid.getStagePositionFromGridPosition(10, 10);
         Assertions.assertEquals(new Vector2(320, 320), pos);
     }
 }

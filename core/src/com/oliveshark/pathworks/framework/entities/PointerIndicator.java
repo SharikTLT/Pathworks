@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.oliveshark.pathworks.framework.grid.util.PositionUtil;
+import com.oliveshark.pathworks.framework.grid.Grid;
 
 public class PointerIndicator extends Actor {
 
@@ -25,8 +25,8 @@ public class PointerIndicator extends Actor {
     }
 
     public void updatePosition(float x, float y) {
-        Vector2 gridPos = PositionUtil.getGridPositionFromPosition(x, y);
-        Vector2 gdxCellPos = PositionUtil.getPositionFromGridPosition(gridPos);
+        Vector2 gridPos = Grid.getGridPositionFromStagePosition(x, y);
+        Vector2 gdxCellPos = Grid.getStagePositionFromGridPosition(gridPos);
         setX(gdxCellPos.x);
         setY(gdxCellPos.y);
     }
