@@ -39,10 +39,6 @@ public class Agent extends Actor {
         return velocity;
     }
 
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
-
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -66,7 +62,9 @@ public class Agent extends Actor {
     }
 
     public Vector2 getDestination() {
-        return destination;
+        if (destination != null)
+            return destination.cpy();
+        return null;
     }
 
     public void setDestination(Vector2 destination) {

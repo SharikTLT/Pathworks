@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.oliveshark.pathworks.framework.algorithm.def.AbstractAlgorithm;
+import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinationAlgorithm;
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
@@ -29,6 +31,9 @@ public class ViewStage extends Stage {
     private Agent currentAgent = null;
     private boolean secondRightClick = false;
 
+    private AbstractAlgorithm activeAlgorithm = new NavigateTowardsDestinationAlgorithm();
+    private boolean executing = false;
+
     private Texture agentTexture;
     private Texture destTexture;
 
@@ -45,6 +50,11 @@ public class ViewStage extends Stage {
                 if (character == 'r') {
                     grid.reverseCells();
                     return true;
+                } else if (character == 'e') {
+                    executing = !executing;
+                    for (Agent agent : getAgents()) {
+                        agent.getVelocity().set(0, 0);
+                    }
                 }
                 return false;
             }
@@ -61,6 +71,15 @@ public class ViewStage extends Stage {
                 super.touchDragged(event, x, y, pointer);
             }
         });
+    }
+
+    @Override
+    public void act(float delta) {
+        if (executing) {
+            for (Agent agent : getAgents())
+                activeAlgorithm.operate(grid, agent);
+        }
+        super.act(delta);
     }
 
     @Override
