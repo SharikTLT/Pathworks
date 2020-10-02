@@ -13,7 +13,9 @@ import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinat
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
+import com.oliveshark.pathworks.framework.grid.util.CycleList;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
+import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,11 +38,13 @@ public class ViewStage extends Stage {
 
     private Texture agentTexture;
     private Texture destTexture;
+    private TilePackManager tilePackManager;
 
     public ViewStage() {
         agentTexture = new Texture(Gdx.files.internal("agent.png"));
         destTexture = new Texture(Gdx.files.internal("destination.png"));
-        addActor(grid = new Grid());
+        tilePackManager = new TilePackManager("tiles");
+        addActor(grid = new Grid(tilePackManager));
         addActor(pointerIndicator = new PointerIndicator());
         getBatch().enableBlending();
         addListener(new InputListener() {
@@ -55,6 +59,8 @@ public class ViewStage extends Stage {
                     for (Agent agent : getAgents()) {
                         agent.getVelocity().set(0, 0);
                     }
+                } else if (character == '\t') {
+                    tilePackManager.next();
                 }
                 return false;
             }

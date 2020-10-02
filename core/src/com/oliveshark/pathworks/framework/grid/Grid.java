@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.ViewStage;
+import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 
 import static com.oliveshark.pathworks.config.Config.GRID_HEIGHT;
 import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
@@ -17,15 +18,15 @@ import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
 public class Grid extends Actor {
 
     private Cell[][] cells;
-    private Texture tileTexture;
+    private TilePackManager tilePackManager;
 
     private boolean touchDragToggle = false;
 
-    public Grid() {
-        tileTexture = new Texture(Gdx.files.internal("tiles_grass_boulder.png"));
+    public Grid(TilePackManager tilePackManager) {
+        this.tilePackManager = tilePackManager;
         cells = new Cell[GRID_WIDTH][GRID_HEIGHT];
         for (int i = 0; i < GRID_WIDTH; ++i) {
-            for (int j = 0; j < GRID_HEIGHT; ++j) cells[i][j] = new Cell(tileTexture);
+            for (int j = 0; j < GRID_HEIGHT; ++j) cells[i][j] = new Cell(tilePackManager);
         }
 
         setWidth(GRID_WIDTH * TILE_DIMENSION);
@@ -48,7 +49,7 @@ public class Grid extends Actor {
     @Override
     public boolean remove() {
         boolean success = super.remove();
-        tileTexture.dispose();
+        tilePackManager.dispose();
         return success;
     }
 
