@@ -1,8 +1,8 @@
 package com.oliveshark.pathworks.framework.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 import com.oliveshark.pathworks.framework.algorithm.def.CellUserData;
+import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 
 public class Cell {
 

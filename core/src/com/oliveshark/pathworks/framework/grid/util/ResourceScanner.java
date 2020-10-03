@@ -1,8 +1,5 @@
 package com.oliveshark.pathworks.framework.grid.util;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;

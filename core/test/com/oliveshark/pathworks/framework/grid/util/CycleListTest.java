@@ -2,10 +2,8 @@ package com.oliveshark.pathworks.framework.grid.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CycleListTest {
 

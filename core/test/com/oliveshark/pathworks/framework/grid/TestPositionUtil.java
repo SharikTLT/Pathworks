@@ -4,9 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.oliveshark.pathworks.config.Config.GRID_HEIGHT;
-import static com.oliveshark.pathworks.config.Config.GRID_WIDTH;
-import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
+import static com.oliveshark.pathworks.config.Config.*;
 
 class TestPositionUtil {
 

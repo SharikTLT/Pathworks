@@ -3,7 +3,7 @@ package com.oliveshark.pathworks.framework.grid.util;
 import org.junit.jupiter.api.Test;
 
 import static java.util.function.Function.identity;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test {@link ResourceScanner}
