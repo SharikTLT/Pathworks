@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.oliveshark.pathworks.framework.algorithm.def.AgentUserData;
 
 import java.util.Random;
 
@@ -14,6 +15,7 @@ public class Agent extends Actor {
     private Vector2 velocity = new Vector2(0, 0);
     private Texture agentTexture = null;
     private Texture destinationTexture = null;
+    private AgentUserData userData;
 
     public Agent(Texture agentTexture, Texture destinationTexture, float x, float y){
         setColor(generateRandomColor());
@@ -69,5 +71,13 @@ public class Agent extends Actor {
 
     public void setDestination(Vector2 destination) {
         this.destination = destination;
+    }
+
+    public AgentUserData getUserData() {
+        return userData;
+    }
+
+    public void setUserData(AgentUserData userData) {
+        this.userData = userData;
     }
 }
