@@ -13,7 +13,6 @@ import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinat
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
-import com.oliveshark.pathworks.framework.grid.util.CycleList;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 
