@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.algorithm.def.AbstractAlgorithm;
 import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinationAlgorithm;
+import com.oliveshark.pathworks.framework.collision.CollisionController;
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
@@ -50,10 +52,13 @@ public class ViewStage extends Stage {
     private PathMapFileChooser pathMapFileChooser;
     private PathMapStore pathMapStore;
 
+    private ShapeRenderer shapeRenderer;
+
     public ViewStage(NativeFileChooser nativeFileChooser) {
         agentTexture = new Texture(Gdx.files.internal("agent.png"));
         destTexture = new Texture(Gdx.files.internal("destination.png"));
         tilePackManager = new TilePackManager("tiles");
+        shapeRenderer = new ShapeRenderer();
         addActor(grid = new Grid(tilePackManager));
         pathMapStore = new PathMapStore(grid);
         addActor(pointerIndicator = new PointerIndicator());
@@ -135,6 +140,9 @@ public class ViewStage extends Stage {
 
     @Override
     public void act(float delta) {
+        CollisionController cctrl = CollisionController.get();
+        cctrl.clear();
+        cctrl.populate(getAgents(), grid);
         if (executing) {
             for (Agent agent : getAgents())
                 activeAlgorithm.operate(grid, agent);
@@ -236,5 +244,11 @@ public class ViewStage extends Stage {
         getAgents().forEach(agent -> {
             agent.remove();
         });
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        shapeRenderer.dispose();
     }
 }
