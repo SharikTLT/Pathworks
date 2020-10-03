@@ -2,11 +2,13 @@ package com.oliveshark.pathworks.framework.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
+import com.oliveshark.pathworks.framework.algorithm.def.CellUserData;
 
 public class Cell {
 
     private final TilePackManager tilePackManager;
     private boolean occupied = false;
+    private CellUserData userData;
 
     public Cell(TilePackManager tilePackManager) {
         this.tilePackManager = tilePackManager;
@@ -30,5 +32,13 @@ public class Cell {
         } else {
             batch.draw(tilePackManager.get(), x, y, 0, 0, 32, 32);
         }
+    }
+
+    public CellUserData getUserData() {
+        return userData;
+    }
+
+    public void setUserData(CellUserData userData) {
+        this.userData = userData;
     }
 }

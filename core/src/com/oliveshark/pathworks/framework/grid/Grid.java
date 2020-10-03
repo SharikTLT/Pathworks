@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.ViewStage;
 import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
+import com.oliveshark.pathworks.framework.algorithm.def.GridUserData;
 
 import static com.oliveshark.pathworks.config.Config.*;
 
@@ -15,6 +16,7 @@ public class Grid extends Actor {
 
     private Cell[][] cells;
     private TilePackManager tilePackManager;
+    private GridUserData userData;
 
     private boolean touchDragToggle = false;
 
@@ -150,5 +152,13 @@ public class Grid extends Actor {
                 cells[(int)cellPos.x][(int)cellPos.y].setOccupied(touchDragToggle);
             }
         }
+    }
+
+    public GridUserData getUserData() {
+        return userData;
+    }
+
+    public void setUserData(GridUserData userData) {
+        this.userData = userData;
     }
 }
