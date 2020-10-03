@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.ViewStage;
-import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 import com.oliveshark.pathworks.framework.algorithm.def.GridUserData;
+import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
 
 import static com.oliveshark.pathworks.config.Config.*;
 
@@ -125,6 +125,17 @@ public class Grid extends Actor {
 
     public static Vector2 getStagePositionFromGridPosition(float x, float y) {
         return new Vector2(x * TILE_DIMENSION, y * TILE_DIMENSION);
+    }
+
+    /**
+     * Reset every cell to empty state
+     */
+    public void reset() {
+        for (Cell[] colls : cells) {
+            for (Cell cell : colls) {
+                cell.setOccupied(false);
+            }
+        }
     }
 
     private class GridClickListener extends ClickListener {
