@@ -35,6 +35,7 @@ allprojects {
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "http://dl.bintray.com/spookygames/oss" }
     }
 }
 
@@ -47,7 +48,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        
+        compile "net.spookygames.gdx:gdx-nativefilechooser-desktop:1.0.0"
     }
 }
 
@@ -58,8 +59,10 @@ project(":core") {
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
         testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+        compile "net.spookygames.gdx:gdx-nativefilechooser:1.0.0"
     }
 
     test {

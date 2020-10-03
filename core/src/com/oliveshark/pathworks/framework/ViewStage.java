@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.algorithm.def.AbstractAlgorithm;
 import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinationAlgorithm;
 import com.oliveshark.pathworks.framework.entities.Agent;
@@ -15,6 +17,9 @@ import com.oliveshark.pathworks.framework.entities.PointerIndicator;
 import com.oliveshark.pathworks.framework.grid.Grid;
 import com.oliveshark.pathworks.framework.grid.util.Rectangle;
 import com.oliveshark.pathworks.framework.grid.util.TilePackManager;
+import com.oliveshark.pathworks.framework.storage.PathMapStore;
+import com.oliveshark.pathworks.framework.ui.PathMapFileChooser;
+import net.spookygames.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +30,8 @@ import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class ViewStage extends Stage {
+
+    public static final char ESCAPE_BTN = '\u001b';
 
     private Grid grid;
     private PointerIndicator pointerIndicator;
@@ -39,13 +46,20 @@ public class ViewStage extends Stage {
     private Texture destTexture;
     private TilePackManager tilePackManager;
 
-    public ViewStage() {
+    private Window menu;
+    private PathMapFileChooser pathMapFileChooser;
+    private PathMapStore pathMapStore;
+
+    public ViewStage(NativeFileChooser nativeFileChooser) {
         agentTexture = new Texture(Gdx.files.internal("agent.png"));
         destTexture = new Texture(Gdx.files.internal("destination.png"));
         tilePackManager = new TilePackManager("tiles");
         addActor(grid = new Grid(tilePackManager));
+        pathMapStore = new PathMapStore(grid);
         addActor(pointerIndicator = new PointerIndicator());
         getBatch().enableBlending();
+        this.pathMapFileChooser = new PathMapFileChooser(nativeFileChooser);
+        initUI();
         addListener(new InputListener() {
 
             @Override
@@ -60,6 +74,8 @@ public class ViewStage extends Stage {
                     }
                 } else if (character == '\t') {
                     tilePackManager.next();
+                } else if (character == ESCAPE_BTN) {
+                    menu.setVisible(!menu.isVisible());
                 }
                 return false;
             }
@@ -76,6 +92,45 @@ public class ViewStage extends Stage {
                 super.touchDragged(event, x, y, pointer);
             }
         });
+    }
+
+    private void initUI() {
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        menu = new Window("Menu", skin);
+        menu.setPosition(this.getWidth() / 2 - menu.getWidth() / 2, this.getHeight() / 2 - menu.getHeight() / 2);
+        addActor(menu);
+        menu.add(new Label("Press ESC to show/hide", skin));
+        menu.setWidth(200);
+        menu.row();
+
+        TextButton load_map = new TextButton("Load map", skin);
+        load_map.addListener(onClick(() -> pathMapFileChooser.chooseFile(pathMapStore::load)));
+        menu.add(load_map);
+
+        menu.row();
+
+        TextButton save_map = new TextButton("Save map", skin);
+        save_map.addListener(onClick(() -> pathMapFileChooser.chooseFile(pathMapStore::save)));
+        menu.add(save_map);
+
+        menu.row();
+
+        TextButton reset = new TextButton("Reset map", skin);
+        reset.addListener(onClick(() -> {
+            grid.reset();
+            this.resetAgents();
+        }));
+        menu.add(reset);
+    }
+
+    private ClickListener onClick(Runnable onClick) {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                onClick.run();
+            }
+        };
     }
 
     @Override
@@ -175,5 +230,11 @@ public class ViewStage extends Stage {
             }
         }
         return false;
+    }
+
+    public void resetAgents() {
+        getAgents().forEach(agent -> {
+            agent.remove();
+        });
     }
 }
