@@ -101,6 +101,7 @@ public class PathMapStore {
             String line;
             int cols = 0;
             int rows = 0;
+            int rowIndex;
             while ((line = br.readLine()) != null) {
                 Gdx.app.log(TAG, "Read line: " + line);
                 if (line.isEmpty()) {
@@ -114,13 +115,14 @@ public class PathMapStore {
                     Matcher matcher = Pattern.compile(SIZE_HEADER + "(\\d+),(\\d+)$").matcher(line);
                     if (matcher.find()) {
                         cols = Integer.parseInt(matcher.group(1));
-                        rows = Integer.parseInt(matcher.group(2));
+                        rows = Integer.parseInt(matcher.group(2))-1;
                     }
                 }
 
                 if (row > -1) {
+                    rowIndex = rows - row;
                     for (int col = 0; col < cols; col++) {
-                        grid.getCell(new Vector2(col, row)).setOccupied(line.charAt(col) == OCCUPIED_SYMBOL);
+                        grid.getCell(new Vector2(col, rowIndex)).setOccupied(line.charAt(col) == OCCUPIED_SYMBOL);
                     }
                     row++;
                 }
