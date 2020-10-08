@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.oliveshark.pathworks.framework.algorithm.def.AbstractAlgorithm;
-import com.oliveshark.pathworks.framework.algorithm.impl.NavigateTowardsDestinationAlgorithm;
+import com.oliveshark.pathworks.framework.algorithm.impl.BreadthFirstSearchAlgoryrithm;
 import com.oliveshark.pathworks.framework.collision.CollisionController;
 import com.oliveshark.pathworks.framework.entities.Agent;
 import com.oliveshark.pathworks.framework.entities.PointerIndicator;
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.oliveshark.pathworks.config.Config.TILE_DIMENSION;
+import static com.oliveshark.pathworks.framework.grid.Grid.getGridPositionFromStagePosition;
 import static com.oliveshark.pathworks.framework.grid.util.Rectangle.createSquare;
 
 public class ViewStage extends Stage {
@@ -44,7 +45,7 @@ public class ViewStage extends Stage {
     private Agent currentAgent = null;
     private boolean secondRightClick = false;
 
-    private AbstractAlgorithm activeAlgorithm = new NavigateTowardsDestinationAlgorithm();
+    private AbstractAlgorithm activeAlgorithm = new BreadthFirstSearchAlgoryrithm();
     private boolean executing = false;
 
     private Texture agentTexture;
@@ -56,6 +57,9 @@ public class ViewStage extends Stage {
     private PathMapStore pathMapStore;
 
     private ShapeRenderer shapeRenderer;
+    private Label debugPositionLabel;
+    private Skin skin;
+    private Label agentDebugLabel;
 
     public ViewStage(NativeFileChooser nativeFileChooser) {
         agentTexture = new Texture(Gdx.files.internal("agent.png"));
@@ -91,6 +95,7 @@ public class ViewStage extends Stage {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 pointerIndicator.updatePosition(x, y);
+                updateDebugPos(screenToStageCoordinates(new Vector2(x, getHeight() - y)));
                 return super.mouseMoved(event, x, y);
             }
 
@@ -102,8 +107,13 @@ public class ViewStage extends Stage {
         });
     }
 
+    private void updateDebugPos(Vector2 stage) {
+        Vector2 grid = getGridPositionFromStagePosition(stage.x, stage.y);
+        this.debugPositionLabel.setText(getDebugPos(stage, grid));
+    }
+
     private void initUI() {
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
         menu = new Window("Menu", skin);
         menu.setPosition(this.getWidth() / 2 - menu.getWidth() / 2, this.getHeight() / 2 - menu.getHeight() / 2);
         addActor(menu);
@@ -129,6 +139,21 @@ public class ViewStage extends Stage {
             this.resetAgents();
         }));
         menu.add(reset);
+
+        debugPositionLabel = new Label(getDebugPos(new Vector2(0, 0), new Vector2(0, 0)), skin);
+        debugPositionLabel.setX(getWidth() - 150);
+        debugPositionLabel.setY(getHeight() - 100);
+
+        agentDebugLabel = new Label("", skin);
+        agentDebugLabel.setY(getHeight() - 50);
+
+        addActor(agentDebugLabel);
+
+        addActor(debugPositionLabel);
+    }
+
+    private String getDebugPos(Vector2 stage, Vector2 grid) {
+        return "Stage:\nx: " + stage.x + ", y: " + stage.y + "\nGrid:\nx: " + grid.x + ", y: " + grid.y + "\n";
     }
 
     private ClickListener onClick(Runnable onClick) {
@@ -146,10 +171,14 @@ public class ViewStage extends Stage {
         CollisionController cctrl = CollisionController.get();
         cctrl.clear();
         cctrl.populate(getAgents(), grid);
+        StringBuilder sb = new StringBuilder();
         if (executing) {
-            for (Agent agent : getAgents())
+            for (Agent agent : getAgents()) {
                 activeAlgorithm.operate(grid, agent);
+                sb.append(String.format("\n\tAgent[%d]: (%f,%f)\n%s\n", agent.hashCode() % 1000, agent.getX(), agent.getY(), agent.getUserData() != null ? agent.getUserData().toString() : ""));
+            }
         }
+        agentDebugLabel.setText(sb.toString());
         super.act(delta);
     }
 

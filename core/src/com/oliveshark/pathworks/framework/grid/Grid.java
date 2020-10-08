@@ -66,15 +66,30 @@ public class Grid extends Actor {
     }
 
     public Cell getCell(Vector2 pos) {
-        return cells[(int)pos.x][(int)pos.y];
+        return cells[(int) pos.x][(int) pos.y];
     }
 
     public Cell[][] getCells() {
         return cells;
     }
 
+    /**
+     * Check if cell is occupied
+     *
+     * @param pos position in grid
+     * @return
+     */
     public boolean isCellOccupied(Vector2 pos) {
-        return cells[(int)pos.x][(int)pos.y].isOccupied();
+        if (isOutsideGrid(pos)) {
+            return true; // if position outside grid always return occupied condition
+        }
+        return cells[(int) pos.x][(int) pos.y].isOccupied();
+    }
+
+    public boolean isOutsideGrid(Vector2 pos) {
+        int cellX = (int) pos.x;
+        int cellY = (int) pos.y;
+        return cellX < 0 || cellX >= GRID_WIDTH || cellY < 0 || cellY >= GRID_HEIGHT;
     }
 
     /**
@@ -147,7 +162,7 @@ public class Grid extends Actor {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Vector2 cellPos = getGridPositionFromStagePosition(x, y);
-            Cell cell = cells[(int)cellPos.x][(int)cellPos.y];
+            Cell cell = cells[(int) cellPos.x][(int) cellPos.y];
             if (button == Input.Buttons.LEFT) {
                 if (hasAgentOnTile(getStagePositionFromGridPosition(cellPos))) {
                     return false;
@@ -164,7 +179,7 @@ public class Grid extends Actor {
         public void touchDragged(InputEvent input, float x, float y, int pointer) {
             Vector2 cellPos = getGridPositionFromStagePosition(x, y);
             if (!hasAgentOnTile(getStagePositionFromGridPosition(cellPos))) {
-                cells[(int)cellPos.x][(int)cellPos.y].setOccupied(touchDragToggle);
+                cells[(int) cellPos.x][(int) cellPos.y].setOccupied(touchDragToggle);
             }
         }
     }
